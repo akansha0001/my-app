@@ -21,28 +21,26 @@ export default class App extends React.Component  {
     }
 
     componentWillMount() {
-        
+        console.log("check")
         this.renderMyData();
     }
 
     renderMyData(){
-        fetch('https://search-dynamodbto-elasticsearch-kto6hxg5b3t2um4pvypqggqm4i.ap-south-1.es.amazonaws.com/mydatafroms3/_search/?size=204')
+        fetch('https://7p1xt45npc.execute-api.ap-south-1.amazonaws.com/live/getdata')
             .then((response) => response.json())
             .then((responseJson) => {
-              console.log(responseJson)
+              console.log("responseJson")
+              
+               console.log(JSON.parse(responseJson.body))
+               responseJson = JSON.parse(responseJson.body)
               var x=[]
-              var k=responseJson.hits.hits
-              // var time_string=""
-              // var new_time=""
-              // var ii=0
+              var k=responseJson.response
+              
               for(var i=0;i<k.length;i++){
-                var time_string=k[i]["_source"]["updatetime"]
-                // for(ii=0;ii<10;ii++){new_time+=time_string[ii]}
-                // new_time=new_time+'T'
-                // for(ii=11;ii<19;ii++){new_time+=time_string[ii]}
-                // new_time=new_time+'Z'
+                var time_string=k[i]["updatetime"]
+               
                 var y={
-                        "Cupcake":k[i]["_source"]["Cupcake"],
+                        "Cupcake":k[i]["Cupcake"],
                         "updatetime":time_string
                       }
                 x.push(y)
@@ -74,6 +72,7 @@ export default class App extends React.Component  {
           <Line type="monotone" dataKey="updatetime" stroke="#8884d8" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="Cupcake" stroke="#82ca9d" />
         </LineChart>
+        
         );
     }
 }

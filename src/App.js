@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 
 
-import React, { Component } from 'react';
+import React from 'react';
 
 
 export default class App extends React.Component  {
@@ -17,19 +17,24 @@ export default class App extends React.Component  {
 
       this.state = {
         data : null,
+        
       };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         console.log("check")
         this.renderMyData();
+        this.timer = setInterval(() => this.renderMyData(), 300000);
     }
-
+    // componentDidUpdate(prevProps,prevState){
+    //   this.renderMyData();
+    // } 
     renderMyData(){
         fetch('https://7p1xt45npc.execute-api.ap-south-1.amazonaws.com/live/getdata')
             .then((response) => response.json())
             .then((responseJson) => {
               console.log("responseJson")
+              
               
                console.log(JSON.parse(responseJson.body))
                responseJson = JSON.parse(responseJson.body)
@@ -38,6 +43,8 @@ export default class App extends React.Component  {
               
               for(var i=0;i<k.length;i++){
                 var time_string=k[i]["updatetime"]
+
+                
                
                 var y={
                         "Cupcake":k[i]["Cupcake"],
@@ -57,21 +64,21 @@ export default class App extends React.Component  {
       
         return(
           <LineChart
-          width={500}
-          height={500}
-          data={this.state.data}
-          margin={{
-            top: 5, right: 30, left: 20, bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="updatetime" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="Cupcake" stroke="#82ca9d" />
-        </LineChart>
+        width={500}
+        height={300}
+        data={this.state.data}
+        margin={{
+          top: 5, right: 30, left: 20, bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="updatetime" />
+        <YAxis dataKey="Cupcake" />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="Cupcake" stroke="#8884d8"  />
+        {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
+      </LineChart>
         
         );
     }

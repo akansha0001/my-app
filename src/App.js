@@ -24,7 +24,7 @@ export default class App extends React.Component  {
     componentDidMount() {
         console.log("check")
         this.renderMyData();
-        this.timer = setInterval(() => this.renderMyData(), 300000);
+        // this.timer = setInterval(() => this.renderMyData(), 300000);
     }
     // componentDidUpdate(prevProps,prevState){
     //   this.renderMyData();
